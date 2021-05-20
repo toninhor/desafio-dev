@@ -60,7 +60,123 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Usuario'
+    get:
+      tags:
+        - Usuário
+      summary: Lista usuários. 
+      description: <b>Escopos permitidos:</b>
+                    <ul>
+                      <li>ADMIN</li>
+                    </ul>
+      operationId: lista
+      security:
+        - HTTPBasic: 
+          - ADMIN
+      responses:
+        200:
+          description: Consulta realizada com sucesso.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: "#/components/schemas/Usuario"
 
+  /usuario/{idUsuario}:
+    get:
+      tags:
+        - Usuário
+      summary: Lista usuários. 
+      description: <b>Escopos permitidos:</b>
+                    <ul>
+                      <li>ADMIN</li>
+                    </ul>
+      operationId: carrega
+      parameters:
+        - in: path
+          name: idUsuario
+          description: Identificador do usuário
+          required: true
+          schema:
+            type: integer
+            format: int64
+      security:
+        - HTTPBasic: 
+          - ADMIN
+      responses:
+        200:
+          description: Retorna o usuário.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+
+    put:
+      tags: 
+        - Usuário
+      summary: Atualiza um Usuário.
+      description: <b>Escopos permitidos:</b>
+                    <ul>
+                      <li>ADMIN</li>
+                    </ul>
+      operationId: altera
+      parameters: 
+        - in: path
+          name: idUsuario
+          description: Identificador do Usuário
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Usuário que precisa ser atualizado. 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      security:
+        - HTTPBasic: 
+          - ADMIN
+      responses:
+        200:
+          description: Retorna o usuário atualizado. .
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+
+
+    delete:
+      tags: 
+        - Usuário
+      summary: Atualiza um Usuário.
+      description: <b>Escopos permitidos:</b>
+                    <ul>
+                      <li>ADMIN</li>
+                    </ul>
+      operationId: exclui
+      parameters: 
+        - in: path
+          name: idUsuario
+          description: Identificador do Usuário
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Usuário que precisa ser excluído. 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      security:
+        - HTTPBasic: 
+          - ADMIN
+      responses:
+        200:
+          description: "Operação bem sucedida."
 
 components:
   schemas:
