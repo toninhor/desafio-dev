@@ -1,0 +1,7 @@
+    Info:
+      type: object
+      properties:
+        nome:
+          type: string
+        versao:
+          type: string

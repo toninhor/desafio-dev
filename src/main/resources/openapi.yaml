@@ -1,0 +1,70 @@
+openapi: 3.0.0
+servers:
+  - url: /v1
+info:
+  description: Documentação dos serviços de cadastro de usuário
+  version: 1.0.0
+  title: Cadastro de Usuários API
+  contact:
+    email: jose@jpinto.com.br
+tags:
+- name: Info
+  description: Informações da API
+- name: Usuários
+  description: API de Cadastro de Usuários
+paths:
+  /info:
+    get:
+      tags:
+      - Info
+      summary: "Retorna informações da API"
+      operationId: "getInfo"
+      responses:
+        200:
+          description: "Operação bem sucedida."
+          content:
+            application/json:
+              schema:
+                 $ref: "#/components/schemas/Info"
+
+  /usuario:
+    post:
+      tags:
+        - Usuário
+      summary: Cria um novo usuário. 
+      description: <b>Escopos permitidos:</b>
+                    <ul>
+                      <li>ADMIN</li>
+                    </ul>
+      operationId: cria
+      requestBody:
+        description: Cria usuário, caso o mesmo não exista. 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+
+      security:
+        - HTTPBasic: 
+          - ADMIN
+      responses:
+        201:
+          description: Usuário.
+          headers:
+            Location:
+              schema:
+                type: string
+              description: URI para o usuário criado. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+
+
+components:
+  schemas:
+    Usuario:
+      $ref: "./models/usuario.yaml#/Usuario"
+    Info:
+      $ref: "./models/info.yaml#/Info"
