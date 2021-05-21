@@ -1,0 +1,186 @@
+openapi: 3.0.0
+servers:
+  - url: /v1
+info:
+  description: Documentação dos serviços de cadastro de usuário
+  version: 1.0.0
+  title: Cadastro de Usuários API
+  contact:
+    email: jose@jpinto.com.br
+tags:
+- name: Info
+  description: Informações da API
+- name: Usuários
+  description: API de Cadastro de Usuários
+paths:
+  /info:
+    get:
+      tags:
+      - Info
+      summary: "Retorna informações da API"
+      operationId: "getInfo"
+      responses:
+        200:
+          description: "Operação bem sucedida."
+          content:
+            application/json:
+              schema:
+                 $ref: "#/components/schemas/Info"
+
+  /usuario:
+    post:
+      tags:
+        - Usuário
+      summary: Cria um novo usuário. 
+      description: <b>Escopos permitidos:</b>
+                    <ul>
+                      <li>ADMIN</li>
+                    </ul>
+      operationId: cria
+      requestBody:
+        description: Cria usuário, caso o mesmo não exista. 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+
+      security:
+        - HTTPBasic: 
+          - ADMIN
+      responses:
+        201:
+          description: Usuário.
+          headers:
+            Location:
+              schema:
+                type: string
+              description: URI para o usuário criado. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+    get:
+      tags:
+        - Usuário
+      summary: Lista usuários. 
+      description: <b>Escopos permitidos:</b>
+                    <ul>
+                      <li>ADMIN</li>
+                    </ul>
+      operationId: lista
+      security:
+        - HTTPBasic: 
+          - ADMIN
+      responses:
+        200:
+          description: Consulta realizada com sucesso.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: "#/components/schemas/Usuario"
+
+  /usuario/{idUsuario}:
+    get:
+      tags:
+        - Usuário
+      summary: Lista usuários. 
+      description: <b>Escopos permitidos:</b>
+                    <ul>
+                      <li>ADMIN</li>
+                    </ul>
+      operationId: carrega
+      parameters:
+        - in: path
+          name: idUsuario
+          description: Identificador do usuário
+          required: true
+          schema:
+            type: integer
+            format: int64
+      security:
+        - HTTPBasic: 
+          - ADMIN
+      responses:
+        200:
+          description: Retorna o usuário.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+
+    put:
+      tags: 
+        - Usuário
+      summary: Atualiza um Usuário.
+      description: <b>Escopos permitidos:</b>
+                    <ul>
+                      <li>ADMIN</li>
+                    </ul>
+      operationId: altera
+      parameters: 
+        - in: path
+          name: idUsuario
+          description: Identificador do Usuário
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Usuário que precisa ser atualizado. 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      security:
+        - HTTPBasic: 
+          - ADMIN
+      responses:
+        200:
+          description: Retorna o usuário atualizado. .
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+
+
+    delete:
+      tags: 
+        - Usuário
+      summary: Atualiza um Usuário.
+      description: <b>Escopos permitidos:</b>
+                    <ul>
+                      <li>ADMIN</li>
+                    </ul>
+      operationId: exclui
+      parameters: 
+        - in: path
+          name: idUsuario
+          description: Identificador do Usuário
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Usuário que precisa ser excluído. 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      security:
+        - HTTPBasic: 
+          - ADMIN
+      responses:
+        200:
+          description: "Operação bem sucedida."
+
+components:
+  schemas:
+    Usuario:
+      $ref: "./models/usuario.yaml#/Usuario"
+    Info:
+      $ref: "./models/info.yaml#/Info"
