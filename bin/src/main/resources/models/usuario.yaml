@@ -1,0 +1,23 @@
+Usuario:
+  type: object
+  required:
+    - nome
+    - dataDeNascimento
+    - cpf
+  properties:
+    nome:
+      type: string
+    sexo:
+      type: string
+    email:
+      type: string
+    dataDeNascimento:
+      type: string
+      format: date
+    naturalidade:
+      type: string
+    nacionalidade:
+      type: string
+    cpf:
+      type: string
+
