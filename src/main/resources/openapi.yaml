@@ -86,7 +86,7 @@ paths:
     get:
       tags:
         - Usuário
-      summary: Lista usuários. 
+      summary: Carrega usuário. 
       description: <b>Escopos permitidos:</b>
                     <ul>
                       <li>ADMIN</li>
