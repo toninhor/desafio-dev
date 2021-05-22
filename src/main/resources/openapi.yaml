@@ -150,7 +150,7 @@ paths:
     delete:
       tags: 
         - Usuário
-      summary: Atualiza um Usuário.
+      summary: Exclui um Usuário.
       description: <b>Escopos permitidos:</b>
                     <ul>
                       <li>ADMIN</li>

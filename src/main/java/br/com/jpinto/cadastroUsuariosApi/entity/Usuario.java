@@ -2,6 +2,7 @@ package br.com.jpinto.cadastroUsuariosApi.entity;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,18 +23,21 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private String nome;
 
 	private String sexo;
 
 	private String email;
 
+	@Column(nullable = false)
 	private LocalDate dataDeNascimento;
 
 	private String naturalidade;
 
 	private String nacionalidade;
 
+	@Column(nullable = false)
 	private String cpf;
 
 	//---------------------------------------------
