@@ -66,7 +66,6 @@ public class Usuario {
 	@Column(nullable = false, unique = true, length = 11,
 	columnDefinition = "CHAR(11)")
 	@Pattern(regexp = "^[0-9]{1,11}$")
-	//@Format("^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$")
 	private String cpf;
 
 	//---------------------------------------------
