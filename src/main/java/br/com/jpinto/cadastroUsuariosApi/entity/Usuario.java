@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Pattern;
+
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Validate;
 
 /**
  *
@@ -28,6 +31,14 @@ public class Usuario {
 
 	private String sexo;
 
+	/**
+	 *
+	 * @author José Antonio Pinto
+	 *
+	 * Quando houver um problema de formatação, será gerado um erro 400.
+	 */
+	@Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+            + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
 	private String email;
 
 	@Column(nullable = false)
@@ -37,7 +48,25 @@ public class Usuario {
 
 	private String nacionalidade;
 
-	@Column(nullable = false)
+	/**
+	 *
+	 * @author José Antonio Pinto
+	 *
+	 * Na documentação, a validação é definida com as seguintes características
+	 *
+	 * CPF - obrigatório, deve ser validado (formato e não pode haver dois
+	 * cadastros com mesmo cpf)
+	 *
+	 * Quando houver a tentativa de duplicidade de cpf, será gerado um erro 500
+	 * relacionado a contraint.
+	 *
+	 * Quando houver um problema de formatação, será gerado um erro 400.
+	 */
+	@Validate()
+	@Column(nullable = false, unique = true, length = 11,
+	columnDefinition = "CHAR(11)")
+	@Pattern(regexp = "^[0-9]{1,11}$")
+	//@Format("^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$")
 	private String cpf;
 
 	//---------------------------------------------

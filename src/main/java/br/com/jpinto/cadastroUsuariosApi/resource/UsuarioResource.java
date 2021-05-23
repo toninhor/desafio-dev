@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,32 +18,95 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.jpinto.cadastroUsuariosApi.entity.Usuario;
 import br.com.jpinto.cadastroUsuariosApi.repository.UsuarioRepository;
 
+/**
+*
+* @author José Antonio Pinto
+*
+* Consulta, inclusão, alteração e exclusão básicas.
+*/
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioResource {
 
+	final String USUARIO_NAO_ENCONTRADO_MESSAGE = "Usuário não encontrado";
+
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
+	/**
+	 *
+	 * @author José Antonio Pinto
+	 *
+	 * Carrega a lista de usuários
+	 */
 	@GetMapping
-	public List<Usuario> listar(){
-		return this.usuarioRepository.findAll();
-	}
-
-	@GetMapping(path = "/{id}")
-	public ResponseEntity<Usuario> carrega(@PathVariable("id") final Long id){
+	public ResponseEntity<List<Usuario>> listar(){
 		try {
-			return ResponseEntity.ok(this.usuarioRepository.findById(id)
-					.orElseThrow(()->new Exception("Usuário não encontrado")));
+			List<Usuario> usuarios = this.usuarioRepository.findAll();
+			if(usuarios.isEmpty()){
+				throw new Exception(USUARIO_NAO_ENCONTRADO_MESSAGE);
+			}
+			return ResponseEntity.ok(usuarios);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		}
 	}
 
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<Usuario> carrega(@PathVariable("id") final Long id){
+		return carregaUsuario(id);
+	}
+
+	/**
+	 *
+	 * @author José Antonio Pinto
+	 *
+	 * Método para centralizar todas as buscas por usuário
+	 */
+	private ResponseEntity<Usuario> carregaUsuario(final Long id){
+		try {
+			return ResponseEntity.ok(this.usuarioRepository.findById(id)
+					.orElseThrow(()->new Exception(USUARIO_NAO_ENCONTRADO_MESSAGE)));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		}
+	}
+
+	/**
+	 *
+	 * @author José Antonio Pinto
+	 *
+	 * Como estamos usando um banco de dados em memória, não é necessáro
+	 * anotar a classe com o nome da tabela e a mesma é criada automaticamente
+	 * quando a aplicação é iniciada.
+	 *
+	 * @returns Usuario
+	 */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario adicionar(@RequestBody Usuario usuario){
+	public Usuario adicionar(@Validated @RequestBody Usuario usuario){
 		return  usuarioRepository.save(usuario);
 	}
+
+	/**
+	 *
+	 * @author José Antonio Pinto
+	 *
+	 * Exclusão de usuário
+	 *
+	 * @returns HttpStatus
+	 */
+	@DeleteMapping(path = "/{id}")
+	public ResponseEntity<Void> exclui(@PathVariable("id") final Long id){
+
+		ResponseEntity<Usuario> usuario = carregaUsuario(id);
+		if(usuario.getStatusCode() == HttpStatus.OK){
+			this.usuarioRepository.deleteById(id);
+			return ResponseEntity.status(HttpStatus.GONE).build();
+		}
+		return ResponseEntity.status(usuario.getStatusCode()).build();
+	}
 }
+
