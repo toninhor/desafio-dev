@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -89,6 +90,39 @@ public class UsuarioResource {
 	public Usuario adicionar(@Validated @RequestBody Usuario usuario){
 		return  usuarioRepository.save(usuario);
 	}
+
+	/**
+	 *
+	 * @author José Antonio Pinto
+	 *
+	 * Atualiza usuário
+	 *
+	 * @returns Usuario
+	 */
+	@PutMapping(path = "/{id}")
+	public ResponseEntity<Usuario> atualizar(@Validated @RequestBody Usuario usuario,
+			@PathVariable("id") Long id) {
+		//return  usuarioRepository.save(usuarioCarregado);
+
+		ResponseEntity<Usuario> usuarioCarregado = carregaUsuario(id);
+		if(usuarioCarregado.getStatusCode() == HttpStatus.OK){
+			usuarioCarregado.getBody().setCpf(usuario.getCpf());
+			usuarioCarregado.getBody()
+				.setDataDeNascimento(usuario.getDataDeNascimento());
+			usuarioCarregado.getBody().setEmail(usuario.getEmail());
+			usuarioCarregado.getBody()
+				.setNacionalidade(usuario.getNacionalidade());
+			usuarioCarregado.getBody()
+				.setNaturalidade(usuario.getNaturalidade());
+			usuarioCarregado.getBody().setNome(usuario.getNome());
+			usuarioCarregado.getBody().setSexo(usuario.getSexo());
+
+			this.usuarioRepository.save(usuarioCarregado.getBody());
+			return ResponseEntity.ok(usuarioCarregado.getBody());
+		}
+		return ResponseEntity.status(usuarioCarregado.getStatusCode()).build();
+	}
+
 
 	/**
 	 *
