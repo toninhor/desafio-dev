@@ -60,6 +60,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Usuario'
+
     get:
       tags:
         - Usuário
@@ -81,6 +82,8 @@ paths:
                 type: array
                 items: 
                   $ref: "#/components/schemas/Usuario"
+        404:
+          description: "Não Encontrado"
 
   /usuario/{idUsuario}:
     get:
@@ -110,6 +113,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Usuario'
+        404:
+          description: "Não Encontrado"
 
     put:
       tags: 
@@ -145,6 +150,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Usuario'
+        404:
+          description: "Não Encontrado"
 
 
     delete:
@@ -175,8 +182,10 @@ paths:
         - HTTPBasic: 
           - ADMIN
       responses:
-        200:
-          description: "Operação bem sucedida."
+        410:
+          description: "Conteúdo Excluído"
+        404:
+          description: "Não Encontrado"
 
 components:
   schemas:
