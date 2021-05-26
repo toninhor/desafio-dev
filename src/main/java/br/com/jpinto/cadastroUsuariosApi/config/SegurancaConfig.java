@@ -30,13 +30,11 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
 		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
 			http.headers().frameOptions().disable();
 		}
-		http
+		http.csrf().disable().httpBasic().and()
 			.authorizeRequests()
 				.antMatchers("/info/**").permitAll()
 				.antMatchers("/usuario/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
-			.and()
-			.httpBasic()
 			.and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
