@@ -7,6 +7,6 @@ Desafio Dev
  > **Usuário:** cristiano  
  > **Senha:** 123
 
-## Altenativa (base 64)
+## Alternativa (base 64)
  > Basic Y3Jpc3RpYW5vOjEyMw==
 
