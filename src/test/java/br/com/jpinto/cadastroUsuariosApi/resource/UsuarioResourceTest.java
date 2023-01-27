@@ -1,6 +1,5 @@
 package br.com.jpinto.cadastroUsuariosApi.resource;
 
-import static org.junit.Assert.*;
 import static br.com.jpinto.cadastroUsuariosApi.util.TestUtils.buildURL;
 import static br.com.jpinto.cadastroUsuariosApi.util.TestUtils.jsonFromFile;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
